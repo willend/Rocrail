@@ -147,7 +147,7 @@ endif
 INCL_PATH=$(MOUNTPOINT)
 CC_FLAGS=-c $(CC_EXTRA_FLAGS) $(DEBUG) -I$(INCL_PATH) -I$(GENDIR)
 
-CC_WXFLAGS=-c $(CC_EXTRA_FLAGS) $(DEBUG) $(WX_FLAGS) $(WX_INCL) -I$(INCL_PATH) -I$(GENDIR)
+CC_WXFLAGS=-c -std=gnu++11 $(CC_EXTRA_FLAGS) $(DEBUG) $(WX_FLAGS) $(WX_INCL) -I$(INCL_PATH) -I$(GENDIR)
 RRLIBS=$(OUTDIR)$(FS)librocrail.a $(OUTDIR)$(FS)libwrapper.a $(OUTDIR)$(FS)librocs.a $(OUTDIR)$(FS)librocutils.a
 
 SRCS=impl$(FS)guiapp.cpp impl$(FS)item.cpp impl$(FS)locdlg.cpp impl$(FS)planpanel.cpp impl$(FS)propdlg.cpp impl$(FS)swdlg.cpp impl$(FS)streetdlg.cpp impl$(FS)bktext.cpp
@@ -229,14 +229,14 @@ messages:
 
 install:
 	-cp -p $(OUTDIR)$(FS)rocview $(DESTDIR)
-	
+
 macapp:
 	rm -rf Rocrail.app
-	-mkdir Rocrail.app
-	-mkdir Rocrail.app/Contents
-	-mkdir Rocrail.app/Contents/MacOS
-	-mkdir Rocrail.app/Contents/Resources
-	-mkdir Rocrail.app/Contents/Resources/icons
+	mkdir Rocrail.app
+	mkdir Rocrail.app/Contents
+	mkdir Rocrail.app/Contents/MacOS
+	mkdir Rocrail.app/Contents/Resources
+	mkdir Rocrail.app/Contents/Resources/icons
 	cp xpm/rocrail.icns Rocrail.app/Contents/Resources/rocrail.icns
 	cp Info.plist Rocrail.app/Contents/	
 	echo -n 'APPL????' > Rocrail.app/Contents/PkgInfo
@@ -244,10 +244,8 @@ macapp:
 	cp ../unxbin/rocrail Rocrail.app/Contents/MacOS/rocrail
 	cp ../unxbin/*.dylib Rocrail.app/Contents/MacOS
 	cp Run Rocrail.app/Contents/MacOS/
-	-cp /usr/lib/libwx* Rocrail.app/Contents/MacOS/
-	-cp /usr/local/lib/libwx* Rocrail.app/Contents/MacOS/
-	-cp /usr/local/lib/libusb-1.0.0.dylib Rocrail.app/Contents/MacOS/
+	cp -L /usr/local/lib/libwx* Rocrail.app/Contents/MacOS/
+	cp -L /usr/local/lib/libusb-1.0.0.dylib Rocrail.app/Contents/MacOS/
 	rm -rf ../unxbin/Rocrail.app
 	mv -f Rocrail.app ../unxbin
-	
-	
+
